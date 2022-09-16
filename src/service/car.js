@@ -47,4 +47,17 @@ export const updateCar = (carData) => {
             console.log(err)
         });
 };
+export const createCar = (carData) => {
+    return fetch(`/cars`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(carData) 
+    })
+        .then(response => {
+            return response.json();
+        })
+        .catch(err => {
+            console.log(err)
+        });
+};
 
