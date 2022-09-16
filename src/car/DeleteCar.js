@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { isAuthenticated } from '../auth';
 import { deleteCar } from '../service/car';
 import { signout } from '../auth';
 
-class DeleteUser extends Component {
+class DeleteCar extends Component {
     state = {
         redirect: false
     };
 
-    deleteAccount = () => {
-        const token = isAuthenticated().token;
-        const userId = this.props.userId;
-        console.log('userId in deleteAccount ', userId);
+    deleteCar = () => {
+        const carId = this.props.carId;
+        console.log('userId in deleteAccount ', carId);
         deleteCar(userId, token).then(data => {
             if (data.error) {
                 console.log(data.error);
             } else {
                 // signout user
-                signout(() => console.log('User is deleted'));
+                signout(() => console.log('Car is deleted'));
                 // redirect
                 this.setState({ redirect: true });
             }
