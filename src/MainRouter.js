@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Home from "./core/Home";
 import Menu from "./core/Menu";
 import Cars from "./car/Cars";
 import EditCar from "./car/EditCar"; 

@@ -71,7 +71,7 @@ class EditCar extends Component {
   signupForm = (id, title, brand, price, age) => (
     <form>
       <div className="form-group">
-        <label className="text-muted">Title</label>
+        <label className="text-muted">Model</label>
         <input
           onChange={this.handleChange("title")}
           type="text"
@@ -122,7 +122,7 @@ class EditCar extends Component {
 
     return (
       <div className="container">
-        <h2 className="mt-5 mb-5">Edit Profile</h2>
+        <h2 className="mt-5 mb-5">Edit Car</h2>
         <div
           className="alert alert-danger"
           style={{ display: error ? "" : "none" }}

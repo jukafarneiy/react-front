@@ -17,18 +17,13 @@ const Menu = ({ history }) => (
 
             <li className="nav-item">
                 <Link
-                    className={history.location.pathname === '/users' ? 'active nav-link' : 'not-active nav-link'}
-                    to="/users"
+                    className={history.location.pathname === '/cars/new' ? 'active nav-link' : 'not-active nav-link'}
+                    to="/cars/new"
                 >
-                    Users
+                    Add New Car
                 </Link>
             </li>
 
-            <li className="nav-item">
-                <Link to={`/post/create`} style={isActive(history, `/post/create`)} className="nav-link">
-                    Create Post
-                </Link>
-            </li>
         </ul>
     </div>
 );

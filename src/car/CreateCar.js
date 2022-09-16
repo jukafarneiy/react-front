@@ -24,25 +24,25 @@ class EditCar extends Component {
   isValid = () => {
     const { title } = this.state.car;
     if (title.length === 0) {
-      this.setState({ error: "Car name is required.", loading: false });
+      this.setState({ error: "Car model is required.", loading: false });
       return false;
     }
 
     const { brand } = this.state.car;
     if (brand.length === 0) {
-      this.setState({ error: "Brand is required.", loading: false });
+      this.setState({ error: "Car brand is required.", loading: false });
       return false;
     }
 
     const { price } = this.state.car;
     if (price.length === 0) {
-      this.setState({ error: "Price is required.", loading: false });
+      this.setState({ error: "Car price is required.", loading: false });
       return false;
     }
 
     const { age } = this.state.car;
     if (age.length === 0) {
-      this.setState({ error: "Age is required.", loading: false });
+      this.setState({ error: "Car age is required.", loading: false });
       return false;
     }
     return true;
@@ -68,7 +68,7 @@ class EditCar extends Component {
       createCar(data).then((data) => {
         this.setState({ loading: false })
         if (!data._id) return this.setState({ error: data.msg })
-        this.setState({ redirect: `/cars/${data._id}` })
+        this.setState({ redirect: `/` })
       })
     }
   };
@@ -76,7 +76,7 @@ class EditCar extends Component {
   signupForm = () => (
     <form>
       <div className="form-group">
-        <label className="text-muted">Title</label>
+        <label className="text-muted">Model</label>
         <input
           onChange={this.handleChange("title")}
           type="text"
@@ -123,7 +123,7 @@ class EditCar extends Component {
     }
     return (
       <div className="container">
-        <h2 className="mt-5 mb-5">Add New Car</h2>
+        <h2 className="mt-5 mb-5">Register Your New Car</h2>
         <div
           className="alert alert-danger"
           style={{ display: error ? "" : "none" }}

@@ -22,6 +22,7 @@ class Cars extends Component {
         const confirm = window.confirm(`Are you sure that you want to delete the car '${car.title} ${car.age}' from brand '${car.brand}'?`)
         if (confirm) 
         deleteCar(car._id).then(response => {
+            console.log(response)
             this.setState({ 
                 cars: this.state.cars.filter(car => {
                     return car._id !== response._id
