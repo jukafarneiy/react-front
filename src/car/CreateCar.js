@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { createCar } from "../service/car";
 import { Redirect } from 'react-router-dom';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 class EditCar extends Component {
   constructor() {
@@ -11,10 +14,11 @@ class EditCar extends Component {
         title: "",
         brand: "",
         price: 0,
-        age: 0,
+        age: "",
       },
 
       error: "",
+      selectedDate: new Date(),
       redirect: false,
       loading: false,
     };
@@ -40,14 +44,18 @@ class EditCar extends Component {
       return false;
     }
 
-    const { age } = this.state.car;
-    if (age.length === 0) {
-      this.setState({ error: "Car age is required.", loading: false });
-      return false;
-    }
-    return true;
-
+    return true
   };
+
+  componentDidMount() {
+    let year = this.state.selectedDate.toLocaleDateString('en-us', { year: "numeric" })
+    this.setState({
+      car: {
+        ...this.state.car,
+        ["age"]: year
+      },
+    })
+  }
 
   handleChange = name => event => {
     this.setState({ error: "" });
@@ -60,10 +68,22 @@ class EditCar extends Component {
     });
   };
 
+  handleDate = date => {
+    let year = date.toLocaleDateString('en-us', { year: "numeric" })
+    this.setState({
+      car: {
+        ...this.state.car,
+        ["age"]: year
+      },
+      selectedDate: date
+    })
+  };
+
+
   clickSubmit = event => {
     event.preventDefault();
     this.setState({ loading: true });
-    let data = this.state.car
+    let data = this.state.car;
     if (this.isValid()) {
       createCar(data).then((data) => {
         this.setState({ loading: false })
@@ -71,6 +91,7 @@ class EditCar extends Component {
         this.setState({ redirect: `/` })
       })
     }
+
   };
 
   signupForm = () => (
@@ -93,21 +114,28 @@ class EditCar extends Component {
       </div>
 
       <div className="form-group">
-        <label className="text-muted">Price</label>
-        <textarea
+        <form method="post" action="#">
+        <label className="form-label" for="typeNumber">Price</label>
+        <input type="text" name="currency-field" id="currency-field" 
+        pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="R$" />
+        {/* <textarea
           onChange={this.handleChange("price")}
           type="text"
           className="form-control"
-        />
+        /> */}
+        </form>
       </div>
 
       <div className="form-group">
-        <label className="text-muted">Age</label>
-        <textarea
-          onChange={this.handleChange("age")}
-          type="text"
-          className="form-control"
+        <label className="text-muted">Year</label>
+        <DatePicker
+          selected={this.state.selectedDate}
+          onChange={(date) => this.handleDate(date)}
+          showYearPicker
+          dateFormat="yyyy"
+          yearItemNumber={10}
         />
+
       </div>
 
       <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">

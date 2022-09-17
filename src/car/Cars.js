@@ -40,9 +40,9 @@ class Cars extends Component {
                 <div className="card col-md-4" key={i}>
                     <div className="card-body">
                         <h5 className="card-title">{car.title}</h5>
-                        <p className="card-text">{car.brand}</p>
+                        <p className="card-text text-uppercase">{car.brand}</p>
                         <p className="card-text">{car.price}</p>
-                        <p className="card-text">{car.age}</p>
+                        <p className="text-uppercase">{car.age}</p>
                         <Link
                             to={`/cars/${car._id}`}
                             className="btn btn-rounded btn-primary btn-sm" 
