@@ -3,6 +3,7 @@ import { createCar } from "../service/car";
 import { Redirect } from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import CurrencyInput from 'react-currency-input-field';
 
 
 class EditCar extends Component {
@@ -24,7 +25,6 @@ class EditCar extends Component {
     };
   }
 
-
   isValid = () => {
     const { title } = this.state.car;
     if (title.length === 0) {
@@ -39,6 +39,7 @@ class EditCar extends Component {
     }
 
     const { price } = this.state.car;
+    // price = price.replace(/./gi, '');
     if (price.length === 0) {
       this.setState({ error: "Car price is required.", loading: false });
       return false;
@@ -58,17 +59,19 @@ class EditCar extends Component {
   }
 
   handleChange = name => event => {
+    // let newPrice = price.replace('.', '');
     this.setState({ error: "" });
     const value = event.target.value;
     this.setState({
       car: {
         ...this.state.car,
-        [name]: value
+        [name]: value,
       }
     });
   };
 
   handleDate = date => {
+    debugger;
     let year = date.toLocaleDateString('en-us', { year: "numeric" })
     this.setState({
       car: {
@@ -115,14 +118,15 @@ class EditCar extends Component {
 
       <div className="form-group">
         <form method="post" action="#">
-        <label className="form-label" for="typeNumber">Price</label>
-        <input type="text" name="currency-field" id="currency-field" 
-        pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" data-type="currency" placeholder="R$" />
-        {/* <textarea
-          onChange={this.handleChange("price")}
-          type="text"
-          className="form-control"
-        /> */}
+          <label className="text-muted" for="typeNumber">Price</label> <br></br>
+          <CurrencyInput
+            id="currency-field"
+            name="currency-field"
+            placeholder="Please enter a price"
+            prefix="R$ "
+            decimalsLimit={2}
+            onChange={this.handleChange("price")}
+          />
         </form>
       </div>
 
