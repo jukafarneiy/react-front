@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { deleteCar, getCars } from "../service/car";
 import { Link } from "react-router-dom";
+import MyStyle from "../service/mystyle.css";
 
 class Cars extends Component {
     constructor() {
@@ -31,14 +32,14 @@ class Cars extends Component {
     }
 
     renderCars = cars => (
-        <div className="table text-align-center bg-white" style={{ width: "max-content" }}>
-            <thead class="bg-light w-100">
+        <div className="table text-align-center font">
+            <thead class="bg-white w-100">
                 <tr>
-                    <th scope="col">Num</th>
-                    <th scope="col">Model</th>
-                    <th scope="col">Brand</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Year</th>
+                    <th scope="col"><strong>Num</strong></th>
+                    <th scope="col"><strong>Model</strong></th>
+                    <th scope="col"><strong>Brand</strong></th>
+                    <th scope="col"><strong>Price</strong></th>
+                    <th scope="col"><strong>Year</strong></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
@@ -49,15 +50,14 @@ class Cars extends Component {
                         <th scope="row">{i}</th>
                         <td> <div class="d-flex align-items-center"> {car.title} </div>   </td>
                         <td>{car.brand}  </td>
-                        <td>{car.price}  </td>
+                        <td>R$ {car.price}  </td>
                         <td>{car.age}  </td>
                         <td><Link
                             to={`/cars/${car._id}`}
-                            className="btn btn-rounded btn-primary btn-sm"
-                        >
+                            className="buttonEdit btn-rounded btn-primary btn-sm">
                             Edit Car
                         </Link>  </td>
-                        <td><button onClick={this.dCar(car)} class="btn btn-rounded btn-primary btn-sm" >
+                        <td><button onClick={this.dCar(car)} class="buttonDelete btn-rounded btn-primary btn-sm" >
                             Delete Car
                         </button> </td>
                     </tr>
@@ -68,10 +68,13 @@ class Cars extends Component {
     );
 
     render() {
+        const { fontStyle } = {
+            fontFamily: "Times New Roman"
+        };
         const { cars } = this.state;
         return (
             <div className="container ">
-                <h2 className="mt-5 mb-5">All Cars</h2>
+                <h2 className="mt-5 mb-5"><em>All Cars</em></h2>
 
                 <div style={{ textAlign: "center" }}>
                     {this.renderCars(cars)}

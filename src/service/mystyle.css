@@ -1,0 +1,36 @@
+   .font {
+       font-family: 'Times New Roman', Times, serif;
+       color: black;
+   }
+
+   .buttonEdit {
+       background-color: #009688;
+       border: none;
+       color: white;
+       text-align: center;
+       display: inline-block;
+       font-size: 14px;
+   }
+
+   .buttonDelete {
+       background-color: red;
+       border: none;
+       color: white;
+       text-align: center;
+       display: inline-block;
+       font-size: 14px;
+   }
+
+   .buttonSave {
+       background-color: #009688;
+       border: none;
+       font-family: 'Times New Roman', Times, serif;
+       color: white;
+       text-align: center;
+       display: inline-block;
+       font-size: 20px;
+   }
+
+   .tableDimensions {
+       width: 200;
+   }

@@ -31,9 +31,19 @@ class EditCar extends Component {
       return false;
     }
 
+    if (title.length > 25) {
+      this.setState({ error: "The limit for 'Model' is 25 characters.", loading: false });
+      return false;
+    }
+
     const { brand } = this.state.car;
     if (brand.length === 0) {
       this.setState({ error: "Car brand is required.", loading: false });
+      return false;
+    }
+
+    if (brand.length > 25) {
+      this.setState({ error: "The limit for 'Brand' is 25 characters.", loading: false });
       return false;
     }
 
@@ -43,9 +53,12 @@ class EditCar extends Component {
       return false;
     }
 
+    if (price.length > 10) {
+      this.setState({ error: "Invalid price.", loading: false });
+      return false;
+    }
     return true
   };
-
 
   componentDidMount() {
     let year = this.state.selectedDate.toLocaleDateString('en-us', { year: "numeric" });
@@ -104,7 +117,7 @@ class EditCar extends Component {
 
   signupForm = () => (
     <form>
-      <div className="form-group">
+      <div className="form-group font">
         <label className="text-muted">Model</label>
         <input
           onChange={this.handleChange("title")}
@@ -112,7 +125,7 @@ class EditCar extends Component {
           className="form-control"
         />
       </div>
-      <div className="form-group">
+      <div className="form-group font">
         <label className="text-muted">Brand</label>
         <input
           onChange={this.handleChange("brand")}
@@ -121,7 +134,7 @@ class EditCar extends Component {
         />
       </div>
 
-      <div className="form-group">
+      <div className="form-group font">
         <form method="post" action="#">
           <label className="text-muted" for="typeNumber">Price</label> <br></br>
           <CurrencyInput
@@ -134,7 +147,7 @@ class EditCar extends Component {
         </form>
       </div>
 
-      <div className="form-group">
+      <div className="form-group font">
         <label className="text-muted">Year</label>
         <DatePicker
           selected={this.state.selectedDate}
@@ -146,7 +159,7 @@ class EditCar extends Component {
 
       </div>
 
-      <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">
+      <button onClick={this.clickSubmit} className="buttonSave btn-rounded btn-primary">
         Save
       </button>
     </form>
@@ -159,7 +172,7 @@ class EditCar extends Component {
     }
     return (
       <div className="container">
-        <h2 className="mt-5 mb-5">Register Your New Car</h2>
+        <h2 className="mt-5 mb-5"><em>Register Your New Car</em></h2>
         <div
           className="alert alert-danger"
           style={{ display: error ? "" : "none" }}
