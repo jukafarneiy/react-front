@@ -17,7 +17,6 @@ class EditCar extends Component {
         price: 0,
         age: "",
       },
-
       error: "",
       selectedDate: new Date(),
       redirect: false,
@@ -39,7 +38,6 @@ class EditCar extends Component {
     }
 
     const { price } = this.state.car;
-    // price = price.replace(/./gi, '');
     if (price.length === 0) {
       this.setState({ error: "Car price is required.", loading: false });
       return false;
@@ -48,18 +46,18 @@ class EditCar extends Component {
     return true
   };
 
+
   componentDidMount() {
-    let year = this.state.selectedDate.toLocaleDateString('en-us', { year: "numeric" })
+    let year = this.state.selectedDate.toLocaleDateString('en-us', { year: "numeric" });
     this.setState({
       car: {
         ...this.state.car,
         ["age"]: year
       },
     })
-  }
+  };
 
   handleChange = name => event => {
-    // let newPrice = price.replace('.', '');
     this.setState({ error: "" });
     const value = event.target.value;
     this.setState({
@@ -71,7 +69,6 @@ class EditCar extends Component {
   };
 
   handleDate = date => {
-    debugger;
     let year = date.toLocaleDateString('en-us', { year: "numeric" })
     this.setState({
       car: {
@@ -79,6 +76,15 @@ class EditCar extends Component {
         ["age"]: year
       },
       selectedDate: date
+    })
+  };
+
+  handlePrice = currency => {
+    this.setState({
+      car: {
+        ...this.state.car,
+        ["price"]: currency
+      },
     })
   };
 
@@ -94,7 +100,6 @@ class EditCar extends Component {
         this.setState({ redirect: `/` })
       })
     }
-
   };
 
   signupForm = () => (
@@ -122,10 +127,9 @@ class EditCar extends Component {
           <CurrencyInput
             id="currency-field"
             name="currency-field"
-            placeholder="Please enter a price"
+            placeholder="R$"
             prefix="R$ "
-            decimalsLimit={2}
-            onChange={this.handleChange("price")}
+            onValueChange={(currency) => this.handlePrice(currency)}
           />
         </form>
       </div>

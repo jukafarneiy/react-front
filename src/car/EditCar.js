@@ -1,33 +1,43 @@
 import React, { Component } from "react";
 import { getCarById, updateCar } from "../service/car";
+import { Redirect } from 'react-router-dom';
+import CurrencyInput from 'react-currency-input-field';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class EditCar extends Component {
   constructor() {
     super();
     this.state = {
-      id: "",
-      title: "",
-      brand: "",
-      price: 0,
-      age: 0,
-
+      car: {
+        title: "",
+        brand: "",
+        price: 0,
+        age: "",
+      },
       error: "",
-      loading: false,
+      selectedDate: "",
+      redirect: false,
+      loading: true,
     };
   }
 
   init = carId => {
     getCarById(carId).then(data => {
+      let y = new Date()
+      y.setFullYear(data.age)
       this.setState({
-        id: data._id,
-        title: data.title,
-        brand: data.brand,
-        price: data.price,
-        age: data.age,
-
+        car: {
+          id: data._id,
+          title: data.title,
+          brand: data.brand,
+          price: data.price,
+          age: data.age,
+        },
+        selectedDate: y,
         error: "",
+        loading: false
       });
-
     });
   };
 
@@ -37,11 +47,37 @@ class EditCar extends Component {
     this.init(carId);
   }
 
+  handleDate = date => {
+    let year = date.toLocaleDateString('en-us', { year: "numeric" })
+    this.carData.set("age", year);
+    this.setState({
+      car: {
+        ...this.state.car,
+        ["age"]: year
+      },
+      selectedDate: date
+    })
+  };
+
+  handlePrice = currency => {
+    this.carData.set("price", currency);
+    this.setState({
+      car: {
+        ...this.state.car,
+        ["price"]: currency
+      },
+    })
+  };
+
   isValid = () => {
     // ADICIONAR VALIDACOES
-    const { title } = this.state;
+
+
+    // IMPORTANTE PORRA JUKA N ESQUECE
+
+    
+    const { title } = this.state.car;
     if (title.length === 0) {
-      // this.setState({ error: "Name is required", loading: false });
       return false;
     }
     return true;
@@ -50,25 +86,30 @@ class EditCar extends Component {
   handleChange = name => event => {
     this.setState({ error: "" });
     const value = event.target.value;
-
     this.carData.set(name, value);
-    this.setState({ [name]: value });
+    this.setState({
+      car: {
+        ...this.state.car,
+        [name]: value,
+      }
+    });
   };
 
   clickSubmit = event => {
     event.preventDefault();
     this.setState({ loading: true });
-    let data = this.state
+    let data = this.state.car
     delete data.error;
     delete data.loading;
     if (this.isValid()) {
       updateCar(data).then(() => {
-        this.setState({ loading: false })
+        this.setState({ loading: false });
+        this.setState({ redirect: `/` })
       })
     }
   };
 
-  signupForm = (id, title, brand, price, age) => (
+  signupForm = (car) => (
     <form>
       <div className="form-group">
         <label className="text-muted">Model</label>
@@ -76,7 +117,7 @@ class EditCar extends Component {
           onChange={this.handleChange("title")}
           type="text"
           className="form-control"
-          value={title}
+          value={car.title}
         />
       </div>
       <div className="form-group">
@@ -85,41 +126,54 @@ class EditCar extends Component {
           onChange={this.handleChange("brand")}
           type="brand"
           className="form-control"
-          value={brand}
+          value={car.brand}
         />
       </div>
 
       <div className="form-group">
-        <label className="text-muted">Price</label>
-        <textarea
-          onChange={this.handleChange("price")}
-          type="text"
-          className="form-control"
-          value={price}
-        />
+        <form method="post" action="#">
+          <label className="text-muted" for="typeNumber">Price</label> <br></br>
+          <CurrencyInput
+            id="currency-field"
+            name="currency-field"
+            placeholder="R$"
+            prefix="R$ "
+            onValueChange={(currency) => this.handlePrice(currency)}
+            value={car.price}
+          />
+        </form>
       </div>
 
       <div className="form-group">
-        <label className="text-muted">Age</label>
-        <textarea
-          onChange={this.handleChange("age")}
-          type="text"
-          className="form-control"
-          value={age}
+        <label className="text-muted">Year</label>
+        <DatePicker
+          selected={this.state.selectedDate}
+          onChange={(date) => this.handleDate(date)}
+          showYearPicker
+          dateFormat="yyyy"
+          yearItemNumber={10}
+          value={car.age}
         />
+
       </div>
 
       <button onClick={this.clickSubmit} className="btn btn-raised btn-primary">
-        Update
+        Save
       </button>
     </form>
   );
 
   render() {
     const {
-      id, title, brand, price, age, error, loading
+      car, error, loading, redirect
     } = this.state;
 
+    debugger
+
+    if (redirect) {
+      return <Redirect to={redirect} />;
+    }
+    
     return (
       <div className="container">
         <h2 className="mt-5 mb-5">Edit Car</h2>
@@ -135,11 +189,8 @@ class EditCar extends Component {
             <h2>Loading...</h2>
           </div>
         ) : (
-          ""
+          this.signupForm(car)
         )}
-
-
-        {this.signupForm(id, title, brand, price, age)}
       </div>
     );
   }
